@@ -5,6 +5,8 @@ export default gql`
     index: Int!
     id: String!
     nickname: String!
+    bio: String
+    avatar: String
     createdAt: String!
     updatedAt: String!
   }

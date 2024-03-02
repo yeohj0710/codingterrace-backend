@@ -19,7 +19,10 @@ export default {
           error: "비밀번호가 올바르지 않습니다.",
         };
       }
-      const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+      const token = await jwt.sign(
+        { index: user.index },
+        process.env.SECRET_KEY
+      );
       return {
         ok: true,
         token,

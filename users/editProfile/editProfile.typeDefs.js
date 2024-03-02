@@ -10,6 +10,8 @@ export default gql`
       id: String
       password: String
       nickname: String
+      bio: String
+      avatar: String
     ): EditProfileResult!
   }
 `;

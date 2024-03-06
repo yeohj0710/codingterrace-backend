@@ -11,7 +11,7 @@ export default {
         if (!existingUser) {
           return {
             ok: false,
-            error: "언팔로우하려는 계정이 존재하지 않습니다.",
+            error: "계정이 존재하지 않습니다.",
           };
         }
         await client.user.update({

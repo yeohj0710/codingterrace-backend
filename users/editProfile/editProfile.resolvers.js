@@ -1,12 +1,24 @@
 import bcrypt from "bcrypt";
 import client from "../../client";
 import { protectResolver } from "../users.utils";
+import { createWriteStream } from "fs";
 
 const resolverFn = async (
   _,
   { id, password: newPassword, nickname, bio, avatar },
   { loggedInUser }
 ) => {
+  let avatarUrl = null;
+  if (avatar) {
+    const { filename, createReadStream } = await avatar.file;
+    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
+    const readStream = createReadStream();
+    const writeStream = createWriteStream(
+      process.cwd() + "/uploads/" + newFilename
+    );
+    readStream.pipe(writeStream);
+    avatarUrl = `http://localhost:4000/static/${newFilename}`;
+  }
   let uglyPassword = null;
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10);
@@ -20,6 +32,7 @@ const resolverFn = async (
       ...(uglyPassword && { password: uglyPassword }),
       nickname,
       bio,
+      ...(avatarUrl && { avatar: avatarUrl }),
     },
   });
   if (!updatedUser.index) {

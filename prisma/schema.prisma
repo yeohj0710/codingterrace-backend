@@ -18,4 +18,24 @@ model User {
   following User[]   @relation("FollowRelation")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Photo     Photo[]
+}
+
+model Photo {
+  index     Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userIndex], references: [index])
+  userIndex Int
+  file      String
+  caption   String?
+  hashtag   Hashtag[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Hashtag {
+  id        Int      @id @default(autoincrement())
+  hashtag   String
+  photos    Photo[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
